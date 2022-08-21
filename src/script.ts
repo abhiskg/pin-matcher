@@ -8,16 +8,24 @@ document
     generatePinField.value = randomPin.toString();
   });
 
-const numericNumbers = document.querySelectorAll(
-  "#numeric-number"
-) as NodeListOf<HTMLButtonElement>;
-numericNumbers.forEach((number) => {
-  number.addEventListener("click", () => {
+document
+  .querySelector<HTMLDivElement>("#calculator")
+  ?.addEventListener("click", (e) => {
+    const character = (e.target as HTMLDivElement).innerText;
     const pinMatchField = document.querySelector(
       "#pin-match-field"
     ) as HTMLInputElement;
-    const prevNumber = number.innerText;
-    pinMatchField.value = prevNumber + prevNumber;
-    console.log(number.innerText);
+    let prevNumber = pinMatchField.value;
+    if (isNaN(parseInt(character))) {
+      if (character === "C") {
+        pinMatchField.value = "";
+      } else if (character === "<") {
+        const digits = prevNumber.split("");
+        digits.pop();
+        pinMatchField.value = digits.join("");
+      }
+    } else {
+      const newNumber = prevNumber + character;
+      pinMatchField.value = newNumber;
+    }
   });
-});
